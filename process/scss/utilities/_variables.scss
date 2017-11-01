@@ -1,0 +1,74 @@
+// ==========================================================================
+// Materialize variables - Skinned
+// ==========================================================================
+//
+// Table of Contents:
+//
+//  Colors
+//  Fonts
+//  Grid
+//  Media query
+//  Root style
+//
+// ==========================================================================
+// Colors
+// ==========================================================================
+
+$brand-primary   :           blue;
+$brand-secondary :           red;
+
+$root-black      :           #000;
+$root-white      :           #fff;
+
+// ==========================================================================
+// Fonts
+// ==========================================================================
+
+$font-primary: 'Roboto', sans-serif;         // Google font
+$font-secondary: 'auther-typeface';          // Local font
+
+// ==========================================================================
+// Grid
+// ==========================================================================
+
+$num-cols: 12 !default;
+$gutter: 30px !default;
+
+// ==========================================================================
+// Breakpoint
+// ==========================================================================
+
+$xsmall-screen-up: 481px !default;
+$small-screen-up: 769px !default;
+$medium-screen-up: 1025px !default;
+$large-screen-up: 1281px !default;
+
+// ==========================================================================
+// Media query
+// ==========================================================================
+
+$xsmall-and-up: "only screen and (min-width : #{$xsmall-screen-up})" !default;
+$small-and-up: "only screen and (min-width : #{$small-screen-up})" !default;
+$medium-and-up: "only screen and (min-width : #{$medium-screen-up})" !default;
+$large-and-up: "only screen and (min-width : #{$large-screen-up})" !default;
+
+//
+// Exemple
+// @media #{$xsmall-and-up} {
+//      display: flex;
+// }
+//
+
+// ==========================================================================
+// Root style
+// ==========================================================================
+
+$root-font-family:                 $font-primary !default;
+$root-font-size:                   16px !default;
+$root-line-height:                 1.5 !default;
+
+body {
+     font-family:    $root-font-family;
+     font-size:      $root-font-size;
+     line-height:    $root-line-height;
+}

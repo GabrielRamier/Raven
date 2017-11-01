@@ -1,0 +1,24 @@
+.container {
+     background-color: red;
+     padding-bottom: $gutter;
+     padding-top: $gutter;
+
+     .col1 {
+          background-color: green;
+          font-family: $font-primary;
+
+          @media #{$xsmall-and-up} {
+               background-color: pink;
+          }
+     }
+
+     .col2 {
+          background-color: $brand-primary;
+          font-family: $font-secondary;
+     }
+
+     .col3 {
+          background-color: orange;
+          font-size: 1.375em;
+     }
+}
