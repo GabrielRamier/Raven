@@ -1,11 +1,12 @@
 // ==========================================================================
-// Materialize variables - Skinned
+// Variables
 // ==========================================================================
 //
 // Table of Contents:
 //
 //  Colors
 //  Fonts
+//  Breakpoint
 //  Grid
 //  Media query
 //  Root style
@@ -28,36 +29,32 @@ $font-primary: 'Roboto', sans-serif;         // Google font
 $font-secondary: 'auther-typeface';          // Local font
 
 // ==========================================================================
-// Grid
-// ==========================================================================
-
-$num-cols: 12 !default;
-$gutter: 30px !default;
-
-// ==========================================================================
 // Breakpoint
 // ==========================================================================
 
-$xsmall-screen-up: 481px !default;
-$small-screen-up: 769px !default;
-$medium-screen-up: 1025px !default;
-$large-screen-up: 1281px !default;
+$grid-breakpoints: (
+    //root: 0,
+    xs:                            480px,
+    sm:                            768px,
+    md:                            1024px,
+    lg:                            1280px
+);
+
+// ==========================================================================
+// Grid
+// ==========================================================================
+
+$grid-columns:                     12;
+$grid-gutter:                      30px;
+$grid-container-width:             1366px;
 
 // ==========================================================================
 // Media query
 // ==========================================================================
-
-$xsmall-and-up: "only screen and (min-width : #{$xsmall-screen-up})" !default;
-$small-and-up: "only screen and (min-width : #{$small-screen-up})" !default;
-$medium-and-up: "only screen and (min-width : #{$medium-screen-up})" !default;
-$large-and-up: "only screen and (min-width : #{$large-screen-up})" !default;
-
-//
-// Exemple
-// @media #{$xsmall-and-up} {
-//      display: flex;
+// Ex
+// @include mq(md) {
+//    margin: 0 auto;
 // }
-//
 
 // ==========================================================================
 // Root style

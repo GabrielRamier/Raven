@@ -1,180 +1,197 @@
-// Materialize grid
-// http://materializecss.com/grid.html
-//
-// The MIT License (MIT)
-//
-// Copyright (c) 2014-2017 Materialize
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+// ==========================================================================
+// Grid Custom System
+// ==========================================================================
 
-.container {
-     margin: 0 auto;
-     max-width: ($large-screen-up) - 1px;
-     // width: 90%;
-}
-@media #{$medium-and-up} {
-     .container {
-          // width: 85%;
-     }
-}
-@media #{$large-and-up} {
-     .container {
-          // width: 70%;
-     }
+// !! Requires map-variables $grid-breakpoints
+
+// Grid Utilities
+// --------------------------------------------------------------------------
+
+%container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: $grid-container-width;
+
+    @if ($grid-gutter != 0) {
+        padding-left: ($grid-gutter / 2);
+        padding-right: ($grid-gutter / 2);
+    }
 }
 
-
-// Mixins to eliminate code repitition
-@mixin reset-offset {
-     margin-left: auto;
-     left: auto;
-     right: auto;
-}
-@mixin grid-classes($size, $i, $perc) {
-     &.offset-#{$size}#{$i} {
-          margin-left: $perc;
-     }
-     &.pull-#{$size}#{$i} {
-          right: $perc;
-     }
-     &.push-#{$size}#{$i} {
-          left: $perc;
-     }
+%container-full {
+    @extend %container;
+    max-width: 100%;
 }
 
+%row {
+    display: flex;
+    flex-flow: row wrap;
 
-.row {
-     margin-left: auto;
-     margin-right: auto;
+    @if ($grid-gutter != 0) {
+        margin-left: -$grid-gutter/2;
+        margin-right: -$grid-gutter/2;
+    }
+}
 
-     // Clear floating children
-     &:after {
-          content: "";
-          display: table;
-          clear: both;
-     }
+%col {
+    display: block;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 100%;
 
-     .col {
-          float: left;
-          box-sizing: border-box;
-          min-height: 1px;
+    @if ($grid-gutter != 0) {
+        padding-left: $grid-gutter/2;
+        padding-right: $grid-gutter/2;
+    }
+}
 
-          &[class*="push-"],
-          &[class*="pull-"] {
-               position: relative;
-          }
+@mixin col($bp, $col) {
+    @extend %col;
 
-          $i: 1;
-          @while $i <= $num-cols {
-               $perc: unquote((100 / ($num-cols / $i)) + "%");
-               &.xs#{$i} {
-                    width: $perc;
-                    @include reset-offset;
-               }
-               $i: $i + 1;
-          }
+    @include mq($bp) {
+        flex-basis: 0;
+        flex-grow: col-math($col);
+    }
+}
 
-          $i: 1;
-          @while $i <= $num-cols {
-               $perc: unquote((100 / ($num-cols / $i)) + "%");
-               @include grid-classes("xs", $i, $perc);
-               $i: $i + 1;
-          }
+%row-block {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
 
-          @media #{$xsmall-and-up} {
+    @if ($grid-gutter != 0) {
+        margin-left: -$grid-gutter/2;
+        margin-right: -$grid-gutter/2;
+    }
+}
 
-               $i: 1;
-               @while $i <= $num-cols {
-                    $perc: unquote((100 / ($num-cols / $i)) + "%");
-                    &.s#{$i} {
-                         width: $perc;
-                         @include reset-offset;
+%block {
+    flex: 1 1 auto;
+    flex-basis: 100%;
+    max-width: 100%;
+
+    @if ($grid-gutter != 0) {
+        padding-left: $grid-gutter/2;
+        padding-right: $grid-gutter/2;
+        margin-top: $grid-gutter;
+    }
+}
+
+@mixin collapse($collapse: true) {
+    @if ($collapse) {
+        padding-left: 0;
+        padding-right: 0;
+        margin-top: 0 !important;
+    } @else {
+        padding-left: $grid-gutter/2;
+        padding-right: $grid-gutter/2;
+    }
+}
+
+@function col-math($col) {
+    $column: 0;
+
+    @if type-of($col) == 'number' {
+        $column: $col;
+    } @else if type-of($col) == 'list' {
+        $column: nth($col, 1) / nth($col, 3);
+    } @else {
+        $column: $col;
+    }
+    @return $column;
+}
+
+// Grid Mixin
+// --------------------------------------------------------------------------
+
+@mixin grid($attribute: 'gr-grid', $attribute-columns: 12, $gutter: 0, $max-width: 100%) {
+
+    // Container
+    [#{$attribute}^='container'] {
+        @extend %container;
+
+        // Container fluid
+        &[#{$attribute}$='--fluid'] {
+            @extend %container-full;
+        }
+    }
+
+    // Row
+    [#{$attribute}~=row] {
+        @extend %row;
+    }
+
+    // Row Block-Grid
+    [#{$attribute}~=row--block] {
+        @extend %row-block;
+    }
+
+    // Collapse without breakpoint
+    [#{$attribute}~=collapse] {
+        > [#{$attribute}] {
+            @include collapse;
+        }
+    }
+
+    // Columns
+    [#{$attribute}~=row] {
+        > [#{$attribute}*='-'],
+        [#{$attribute}~=column] {
+            @extend %col;
+        }
+    }
+
+    // Block column
+    [#{$attribute}=block] {
+        @extend %block;
+    }
+
+    @each $bp, $w in $grid-breakpoints {
+        @media only screen and (min-width: #{$w}) {
+            @for $i from 1 through $attribute-columns {
+
+                [#{$attribute}~=row] [#{$attribute}~='#{$bp}-#{$i}'] {
+                    flex-grow: $i;
+                    flex-basis: 0;
+                }
+
+                [#{$attribute}~=row--block] {
+                    &[#{$attribute}~='#{$bp}-#{$i}'] {
+                        [#{$attribute}=block] {
+                            flex-basis: 100% / $i;
+                            max-width: 100% / $i;
+
+                            &:nth-of-type(n) {
+                                margin-top: 0;
+                            }
+
+                            &:nth-of-type(n + #{$i + 1}) {
+                                margin-top: $grid-gutter;
+                            }
+                        }
                     }
-                    $i: $i + 1
-               }
+                }
+            }
+        }
+    }
 
-               $i: 1;
-               @while $i <= $num-cols {
-                    $perc: unquote((100 / ($num-cols / $i)) + "%");
-                    @include grid-classes("s", $i, $perc);
-                    $i: $i + 1;
-               }
-          }
+    @each $bp, $w in $grid-breakpoints {
+        @media only screen and (min-width: #{$w}) {
+            [#{$attribute}=row] {
 
-          @media #{$small-and-up} {
-
-               $i: 1;
-               @while $i <= $num-cols {
-                    $perc: unquote((100 / ($num-cols / $i)) + "%");
-                    &.m#{$i} {
-                         width: $perc;
-                         @include reset-offset;
+                &[#{$attribute}~='#{$bp}-collapse'] {
+                    > [#{$attribute}] {
+                        @include collapse;
                     }
-                    $i: $i + 1
-               }
+                }
 
-               $i: 1;
-               @while $i <= $num-cols {
-                    $perc: unquote((100 / ($num-cols / $i)) + "%");
-                    @include grid-classes("m", $i, $perc);
-                    $i: $i + 1;
-               }
-          }
-
-          @media #{$medium-and-up} {
-
-               $i: 1;
-               @while $i <= $num-cols {
-                    $perc: unquote((100 / ($num-cols / $i)) + "%");
-                    &.l#{$i} {
-                         width: $perc;
-                         @include reset-offset;
+                &[#{$attribute}~='#{$bp}-uncollapse'] {
+                    > [#{$attribute}] {
+                        @include collapse(false);
                     }
-                    $i: $i + 1;
-               }
-
-               $i: 1;
-               @while $i <= $num-cols {
-                    $perc: unquote((100 / ($num-cols / $i)) + "%");
-                    @include grid-classes("l", $i, $perc);
-                    $i: $i + 1;
-               }
-          }
-
-          @media #{$large-and-up} {
-
-               $i: 1;
-               @while $i <= $num-cols {
-                    $perc: unquote((100 / ($num-cols / $i)) + "%");
-                    &.xl#{$i} {
-                         width: $perc;
-                         @include reset-offset;
-                    }
-                    $i: $i + 1;
-               }
-
-               $i: 1;
-               @while $i <= $num-cols {
-                    $perc: unquote((100 / ($num-cols / $i)) + "%");
-                    @include grid-classes("xl", $i, $perc);
-                    $i: $i + 1;
-               }
-          }
-     }
+                }
+            }
+        }
+    }
 }

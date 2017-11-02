@@ -1,0 +1,63 @@
+// ==========================================================================
+// Mixins
+// ==========================================================================
+
+// Media-Queries
+// --------------------------------------------------------------------------
+//  @example scss - Usage
+//      @include mq(sm);
+//
+//  @example css - Output
+//     @media (min-width: 768px) {}
+//
+//
+//  @example scss - Usage
+//      @include mq(sm, 1);
+//
+//  @example css - Output
+//     @media (max-width: 767px) {}
+//
+//
+//  @example scss - Usage
+//      @include mq(sm, md);
+//
+//  @example css - Output
+//    @media (max-width: 1023px) and (min-width: 768px) {}
+//
+@mixin mq($breakpoint, $max-bp: 0) {
+    $default: map-get($grid-breakpoints, $breakpoint);
+
+    @if ($default) {
+        // min width only
+        @if ($max-bp == 0) {
+            @media (min-width: em($default)) { // stylelint-disable-line
+                @content;
+            }
+        }
+        // max width only
+        @else if ($max-bp == 1) {
+            @media (max-width: em(($default - 1px))) { // stylelint-disable-line
+                @content;
+            }
+        }
+        // max width and min width
+        @else {
+            $max: map-get($grid-breakpoints, $max-bp);
+            @if ($max) {
+                @media (max-width: em(($max - 1px))) and (min-width: em($default)) { // stylelint-disable-line
+                    @content;
+                }
+            }
+
+            @else {
+                @warn 'Unfortunately, no value could be retrieved from `#{$max-bp}`. '
+                    + 'Please make sure it is defined in `$grid-breakpoints` map '
+                    + 'or use 1 for max-width only';
+            }
+        }
+    }
+    @else {
+        @warn 'Unfortunately, no value could be retrieved from `#{$breakpoint}`. '
+            + 'Please make sure it is defined in `$grid-breakpoints` map.';
+    }
+}
