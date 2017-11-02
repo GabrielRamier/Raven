@@ -1,18 +1,30 @@
 {
-  "name": "projettest",
-  "version": "1.0.0",
+  "name": "raven",
+  "version": "1.2.0",
   "description": "",
-  "main": "index.js",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "autoprefixer": "^7.1.6",
+    "concat": "^1.0.3",
+    "gulp": "^3.9.1",
+    "imagemin": "^5.3.1",
+    "minify": "^3.0.2",
+    "sass": "^1.0.0-beta.2",
+    "svgmin": "^0.1.0",
+    "uglify": "^0.1.5"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GabrielRamier/Raven.git"
+  },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.0.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-imagemin": "^3.4.0",
-    "gulp-sass": "^3.1.0"
-  }
+  "bugs": {
+    "url": "https://github.com/GabrielRamier/Raven/issues"
+  },
+  "homepage": "https://github.com/GabrielRamier/Raven#readme"
 }
