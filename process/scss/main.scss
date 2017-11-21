@@ -10,11 +10,12 @@
 @import 'utilities/variables.scss';
 @import 'utilities/reset.scss';
 @import 'utilities/mixins.scss';
-@import 'utilities/grid.scss';
+@import 'utilities/typography.scss';
+@import 'utilities/magnific-popup.scss';
+
 
 // Components style
 // @import 'components/template.scss';
 
 // Layout style
-// @import 'components/template.scss';
-@include grid('gr-grid', 12, $grid-gutter, $grid-container-width);
+// @import 'layouts/template.scss';

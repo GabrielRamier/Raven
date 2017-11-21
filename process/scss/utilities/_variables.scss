@@ -18,8 +18,10 @@
 $brand-primary   :           blue;
 $brand-secondary :           red;
 
-$root-black      :           #000;
-$root-white      :           #fff;
+$root-black      :           #000000;
+$root-dgrey      :           #4c4c4c;
+$root-lgrey      :           #9b9a9b;
+$root-white      :           #ffffff;
 
 // ==========================================================================
 // Fonts
@@ -47,6 +49,9 @@ $grid-breakpoints: (
 $grid-columns:                     12;
 $grid-gutter:                      30px;
 $grid-container-width:             1366px;
+
+@import 'utilities/grid.scss';
+@include grid('gr-grid', 12, $grid-gutter, $grid-container-width);
 
 // ==========================================================================
 // Media query
