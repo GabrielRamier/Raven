@@ -30,6 +30,7 @@ Raven {
                utilities {
                     font.scss
                     functions.scss
+                    grid.scss
                     magnific-popup.scss
                     mixins.scss
                     reset.scss
@@ -78,6 +79,7 @@ utilities : in this folder you will find some files to help you with the style o
 
      - font : in this file you will import local font and/or google font.
      - function : in this file you will find so functions to make your life easier.
+     - grid : in this file you will find the grid.
      - magnific-popup : in this file you will find the magnific-popup style sheet version 1.1.0.
      - mixins : in this file you will the Media-Queries mixins.
      - reset : in this file you will a reset style sheet.
